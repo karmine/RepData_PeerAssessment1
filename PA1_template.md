@@ -7,7 +7,7 @@
 
 ```r
 if(!file.exists('activity.csv')){
-        unzip('activity.zip')
+    unzip('activity.zip')
 }
 activityData <- read.csv('activity.csv')
 ```
@@ -18,10 +18,10 @@ activityData <- read.csv('activity.csv')
 ```
 
 -----
-        
-        ## What is mean total number of steps taken per day?
-        
-        ```r
+
+## What is mean total number of steps taken per day?
+
+```r
 stepsByDay <- tapply(activityData$steps, activityData$date, sum, na.rm=TRUE)
 ```
 
@@ -43,10 +43,10 @@ stepsByDayMedian <- median(stepsByDay)
 * Median:  10395
 
 -----
-        
-        ## What is the average daily activity pattern?
-        
-        ```r
+
+## What is the average daily activity pattern?
+
+```r
 averageStepsPerTimeBlock <- aggregate(x=list(meanSteps=activityData$steps), by=list(interval=activityData$interval), FUN=mean, na.rm=TRUE)
 ```
 
@@ -54,9 +54,9 @@ averageStepsPerTimeBlock <- aggregate(x=list(meanSteps=activityData$steps), by=l
 
 ```r
 ggplot(data=averageStepsPerTimeBlock, aes(x=interval, y=meanSteps)) +
-        geom_line() +
-        xlab("5-minute interval") +
-        ylab("average number of steps taken") 
+    geom_line() +
+    xlab("5-minute interval") +
+    ylab("average number of steps taken") 
 ```
 
 ![Plot2](figure/Plot2.png) 
@@ -71,11 +71,11 @@ timeMostSteps <-  gsub("([0-9]{1,2})([0-9]{2})", "\\1:\\2", averageStepsPerTimeB
 * Most Steps at: 8:35
 
 ----
-        
-        ## Imputing missing values
-        ##### 1. Calculate and report the total number of missing values in the dataset 
-        
-        ```r
+
+## Imputing missing values
+##### 1. Calculate and report the total number of missing values in the dataset 
+
+```r
 numMissingValues <- length(which(is.na(activityData$steps)))
 ```
 
@@ -106,16 +106,16 @@ stepsByDayMeanImputed <- mean(stepsByDayImputed)
 stepsByDayMedianImputed <- median(stepsByDayImputed)
 ```
 * Mean (Imputed): 1.0766 &times; 10<sup>4</sup>
-        * Median (Imputed):  1.0766 &times; 10<sup>4</sup>
-        
-        
-        ----
-        
-        ## Are there differences in activity patterns between weekdays and weekends?
-        ##### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
-        
-        
-        ```r
+* Median (Imputed):  1.0766 &times; 10<sup>4</sup>
+
+
+----
+
+## Are there differences in activity patterns between weekdays and weekends?
+##### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+
+
+```r
 activityDataImputed$dateType <-  ifelse(as.POSIXlt(activityDataImputed$date)$wday %in% c(0,6), 'weekend', 'weekday')
 ```
 
@@ -125,10 +125,10 @@ activityDataImputed$dateType <-  ifelse(as.POSIXlt(activityDataImputed$date)$wda
 ```r
 averagedActivityDataImputed <- aggregate(steps ~ interval + dateType, data=activityDataImputed, mean)
 ggplot(averagedActivityDataImputed, aes(interval, steps)) + 
-        geom_line() + 
-        facet_grid(dateType ~ .) +
-        xlab("5-minute interval") + 
-        ylab("avarage number of steps")
+    geom_line() + 
+    facet_grid(dateType ~ .) +
+    xlab("5-minute interval") + 
+    ylab("avarage number of steps")
 ```
 
 ![Plot4](figure/Plot4.png) 
